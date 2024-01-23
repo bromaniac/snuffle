@@ -1,0 +1,317 @@
+#! /bin/sh
+# This is a shell archive.  Remove anything before this line, then unpack
+# it by saving it into a file and typing "sh file".  To overwrite existing
+# files, type "sh file -c".  You can also feed this as standard input via
+# unshar, or by typing "sh <file", e.g..  If this archive is complete, you
+# will see the following message at the end:
+#		"End of shell archive."
+# Contents:  Makefile README snuffle.1 snuffle.c unsnuffle.c
+# Wrapped by brnstnd@kramden on Thu Jun 14 04:45:47 1990
+PATH=/bin:/usr/bin:/usr/ucb ; export PATH
+if test -f 'Makefile' -a "${1}" != "-c" ; then 
+  echo shar: Will not clobber existing file \"'Makefile'\"
+else
+echo shar: Extracting \"'Makefile'\" \(702 characters\)
+sed "s/^X//" >'Makefile' <<'END_OF_FILE'
+XCC=cc
+XCCOPTS=-O2 -s
+X
+XNROFF=nroff
+XNROFFOPTS=-man
+X
+Xdefault: all
+X
+Xall: snuffle unsnuffle snuffle.man
+X
+Xshar: snuffle.shar
+X
+Xsnuffle: snuffle.o hash512.o sboxes.o Makefile
+X	$(CC) $(CCOPTS) -o snuffle snuffle.o hash512.o sboxes.o
+X
+Xunsnuffle: unsnuffle.o hash512.o sboxes.o Makefile
+X	$(CC) $(CCOPTS) -o unsnuffle unsnuffle.o hash512.o sboxes.o
+X
+Xsnuffle.o: snuffle.c snefru.h
+X	$(CC) $(CCOPTS) -c snuffle.c
+X
+Xunsnuffle.o: unsnuffle.c snefru.h
+X	$(CC) $(CCOPTS) -c unsnuffle.c
+X
+Xsnuffle.man: snuffle.1 Makefile
+X	$(NROFF) $(NROFFOPTS) < snuffle.1 > snuffle.man
+X
+Xsnuffle.shar: Makefile README snuffle.1 snuffle.c unsnuffle.c
+X	shar Makefile README snuffle.1 snuffle.c unsnuffle.c > snuffle.shar
+X	chmod 400 snuffle.shar
+END_OF_FILE
+if test 702 -ne `wc -c <'Makefile'`; then
+    echo shar: \"'Makefile'\" unpacked with wrong size!
+fi
+# end of 'Makefile'
+fi
+if test -f 'README' -a "${1}" != "-c" ; then 
+  echo shar: Will not clobber existing file \"'README'\"
+else
+echo shar: Extracting \"'README'\" \(991 characters\)
+sed "s/^X//" >'README' <<'END_OF_FILE'
+Xsnuffle - generic hash-based encryption and decryption programs
+X
+Xsnuffle and unsnuffle turn any good one-way hash function (such as
+XMerkle's Snefru) into a reasonably fast private-key encryption method.
+XYou must have Snefru, or something providing the same Hash512()
+Xinterface, for snuffle and unsnuffle to work. Past that, snuffle and
+Xunsnuffle should be perfectly portable.
+X
+XOn this Sun 4, snuffle and unsnuffle encrypt between two and three times
+Xslower than crypt(1). However, they provide a lot more security.
+X
+Xsnuffle is public domain. Send any comments to the newsgroup sci.crypt,
+Xwhich the author reads whenever possible. I do *not* know whether
+Xsnuffle is legally exportable; it contains no encryption technology, but
+XI'm not going to try sending it outside the United States.
+X
+XStart by making symbolic links or copies of snefru's hash512.o,
+Xsboxes.o, snefru.h, and patchlevel.h in this directory. Then edit the
+Xoptions in the Makefile and compile. Read snuffle.man and you're off.
+END_OF_FILE
+if test 991 -ne `wc -c <'README'`; then
+    echo shar: \"'README'\" unpacked with wrong size!
+fi
+# end of 'README'
+fi
+if test -f 'snuffle.1' -a "${1}" != "-c" ; then 
+  echo shar: Will not clobber existing file \"'snuffle.1'\"
+else
+echo shar: Extracting \"'snuffle.1'\" \(1283 characters\)
+sed "s/^X//" >'snuffle.1' <<'END_OF_FILE'
+X.TH snuffle 1
+X.SH NAME
+Xsnuffle \- encrypt
+X
+Xunsnuffle \- decrypt
+X.SH SYNTAX
+Xsnuffle
+X[
+X.I time-key
+X]
+X
+Xunsnuffle
+X[
+X.I time-key
+X]
+X.SH DESCRIPTION
+X.I snuffle
+Xencrypts its input and sends it to the output.
+XUp to the first newline or EOF,
+Xthe input is taken as a key;
+Xif
+X.I time-key
+Xis provided,
+Xit is used as a further key.
+X.PP
+X.I unsnuffle
+Xdecrypts its input and sends it to the output.
+XIt takes an input key
+Xand
+X.I time-key
+Xthe same way
+Xas
+X.I snuffle.
+X.PP
+X.I snuffle
+Xand 
+X.I unsnuffle
+Xuse
+XRalph Merkle's
+XSnefru
+Xhash function,
+Xwhich is probably about three times more secure than DES.
+XActually,
+Xany reasonably good hash function
+Xcan be plugged into
+Xthese programs.
+XEncryption and hashing are fundamentally equivalent.
+X.PP
+XThe input key is most important for the first 64 characters,
+Xless important for the next 55 characters, and ignored past
+Xthat.
+X.I time-key
+Xis ignored past 64 characters.
+X.I time-key
+Xshould be a time-dependent key,
+Xperhaps the output of
+X.I date(1);
+Xit helps limit the damage that
+Xa single security breach can do.
+X.PP
+XAlthough
+X.I snuffle
+Xis twice as slow as
+X.I crypt(1),
+Xit is much more secure.
+XThe input key provides at least 128 bits of real security.
+X.SH BUGS
+XHmph.
+X.SH AUTHOR
+XPlaced into the public domain by Daniel J. Bernstein.
+X.SH "SEE ALSO"
+Xcrypt(1),
+Xcrypt(3)
+END_OF_FILE
+if test 1283 -ne `wc -c <'snuffle.1'`; then
+    echo shar: \"'snuffle.1'\" unpacked with wrong size!
+fi
+# end of 'snuffle.1'
+fi
+if test -f 'snuffle.c' -a "${1}" != "-c" ; then 
+  echo shar: Will not clobber existing file \"'snuffle.c'\"
+else
+echo shar: Extracting \"'snuffle.c'\" \(1289 characters\)
+sed "s/^X//" >'snuffle.c' <<'END_OF_FILE'
+X#include <stdio.h>
+X#include "snefru.h"
+X
+X#define NMAX 10000
+X
+Xmain(argc,argv)
+Xint argc;
+Xchar *argv[];
+X{
+X register int ch;
+X static unsigned char x[NMAX];
+X register unsigned char y = 0;
+X static unsigned char h[NMAX];
+X static unsigned char m[32];
+X static unsigned char l[64];
+X static unsigned char k[64];
+X register int n = 64;
+X register int i;
+X register WORD32 *wm = &m[0];
+X register WORD32 *wl = &l[0];
+X register int level = 3;
+X
+X SetupHash512();
+X
+X for (i = 0;i < 64;i++)
+X   x[i] = k[i] = h[i] = 0;
+X   /* What matters is x[9...63], y, k[0...63], h[0...63]. */
+X
+X i = 0;
+X while (((ch = getchar()) != EOF) && (ch != '\n'))
+X   if (i < 64)
+X     k[i++] = (unsigned char) ch;
+X   else if (i < 119)
+X     x[i++ - 55] = (unsigned char) ch;
+X if (argv[1])
+X   for (i = 0;argv[1][i] && (i < 64);i++)
+X     h[i] = argv[1][i];
+X
+X while ((ch = getchar()) != EOF)
+X  {
+X   if (!(n & 31))
+X    {
+X     for (i = 0;i < 64;i++)
+X       l[i] = k[i] ^ h[n - 64 + i];
+X     Hash512(wm,wl,level,8);
+X    }
+X
+X   x[n] = x[n - 24] + x[n - 55] + ((unsigned char) ch);
+X   h[n] = x[n] + m[n & 31];
+X   y += h[n];
+X   (void) putchar((char) y);
+X
+X   n++;
+X   if (n == NMAX)
+X    {
+X     for (i = 0;i < 64;i++)
+X      {
+X       x[(n & 31) + i] = x[n - 64 + i];
+X       h[(n & 31) + i] = h[n - 64 + i];
+X      }
+X     n = (NMAX & 31) + 64;
+X    }
+X  }
+X}
+END_OF_FILE
+if test 1289 -ne `wc -c <'snuffle.c'`; then
+    echo shar: \"'snuffle.c'\" unpacked with wrong size!
+fi
+# end of 'snuffle.c'
+fi
+if test -f 'unsnuffle.c' -a "${1}" != "-c" ; then 
+  echo shar: Will not clobber existing file \"'unsnuffle.c'\"
+else
+echo shar: Extracting \"'unsnuffle.c'\" \(1277 characters\)
+sed "s/^X//" >'unsnuffle.c' <<'END_OF_FILE'
+X#include <stdio.h>
+X#include "snefru.h"
+X
+X#define NMAX 10000
+X
+Xmain(argc,argv)
+Xint argc;
+Xchar *argv[];
+X{
+X register int ch;
+X static unsigned char x[NMAX];
+X register unsigned char y = 0;
+X static unsigned char h[NMAX];
+X static unsigned char m[32];
+X static unsigned char l[64];
+X static unsigned char k[64];
+X register int n = 64;
+X register int i;
+X register WORD32 *wm = &m[0];
+X register WORD32 *wl = &l[0];
+X register int level = 3;
+X
+X SetupHash512();
+X
+X for (i = 0;i < 64;i++)
+X   x[i] = k[i] = h[i] = 0;
+X   /* What matters is x[9...63], y, k[0...63], h[0...63]. */
+X
+X i = 0;
+X while (((ch = getchar()) != EOF) && (ch != '\n'))
+X   if (i < 64)
+X     k[i++] = (unsigned char) ch;
+X   else if (i < 119)
+X     x[i++ - 55] = (unsigned char) ch;
+X if (argv[1])
+X   for (i = 0;argv[1][i] && (i < 64);i++)
+X     h[i] = argv[1][i];
+X
+X while ((ch = getchar()) != EOF)
+X  {
+X   if (!(n & 31))
+X    {
+X     for (i = 0;i < 64;i++)
+X       l[i] = k[i] ^ h[n - 64 + i];
+X     Hash512(wm,wl,level,8);
+X    }
+X
+X   h[n] = ch - y;
+X   y = ch;
+X   x[n] = h[n] - m[n & 31];
+X   (void) putchar((char) (x[n] - x[n - 24] - x[n - 55]));
+X
+X   n++;
+X   if (n == NMAX)
+X    {
+X     for (i = 0;i < 64;i++)
+X      {
+X       x[(n & 31) + i] = x[n - 64 + i];
+X       h[(n & 31) + i] = h[n - 64 + i];
+X      }
+X     n = (NMAX & 31) + 64;
+X    }
+X  }
+X}
+END_OF_FILE
+if test 1277 -ne `wc -c <'unsnuffle.c'`; then
+    echo shar: \"'unsnuffle.c'\" unpacked with wrong size!
+fi
+# end of 'unsnuffle.c'
+fi
+echo shar: End of shell archive.
+exit 0

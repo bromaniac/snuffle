@@ -4,15 +4,6 @@ See also: "A Fast Software One-Way Hash Function" by Ralph C. Merkle: https://li
 
 Original usenet post:
 
-> Subject:  v21i019:  Snefru hash and netnews validation programs, Part01/04
-> Newsgroups: comp.sources.unix
-> Approved: rsalz@uunet.UU.NET
-> X-Checksum-Snefru: a2635a27 58d8d3c3 45d32238 4d492459
-> 
-> Submitted-by: Rich $alz <rsalz@bbn.com>
-> Posting-number: Volume 21, Issue 19
-> Archive-name: snefru/part01
-> 
 > This is my revision of Ralph Merkle's SNEFRU program.  Snefru is a one-way
 > hash algorithm:  given some input text, Snefru will come up with a single
 > number such that no two texts will hash down to the same number.  In this
